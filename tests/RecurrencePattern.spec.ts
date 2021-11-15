@@ -1,9 +1,11 @@
-import { PSTFile, PSTFolder, PSTAppointment } from "../src"
-import { RecurrencePattern, PatternType } from "../src/RecurrencePattern"
+import path from "path";
 
-const resolve = require('path').resolve
-let pstFile: PSTFile
-let folder: PSTFolder
+import type { PSTAppointment, PSTFolder } from "../src";
+import { PSTFile } from "../src";
+import { PatternType, RecurrencePattern } from "../src/RecurrencePattern";
+
+let pstFile: PSTFile;
+let folder: PSTFolder;
 
 /*
  |- Root - Public
@@ -101,7 +103,7 @@ let folder: PSTFolder
  |  |  |  |- Conflicts
  |  |  |  |- Local Failures
  |  |  |  |- Server Failures
- |  |  |  |- Sender: Pst Extractor, Subject: Synchronization Log: 
+ |  |  |  |- Sender: Pst Extractor, Subject: Synchronization Log:
  |  |  |- RSS Feeds
  |  |  |- Quick Step Settings
  |  |- ~MAPISP(Internal)
@@ -112,56 +114,62 @@ let folder: PSTFolder
 */
 
 beforeAll(() => {
-  pstFile = new PSTFile(
-    resolve('./src/__tests__/testdata/pstextractortest@outlook.com.ost')
-  )
+    pstFile = new PSTFile(
+        path.resolve("./tests/testdata/pstextractortest@outlook.com.ost")
+    );
 
-  // get to Calendar folder
-  let childFolders: PSTFolder[] = pstFile.getRootFolder().getSubFolders()
-  folder = childFolders[1] // Root - Mailbox
-  childFolders = folder.getSubFolders()
-  folder = childFolders[4] // IPM_SUBTREE
-  childFolders = folder.getSubFolders()
-  folder = childFolders[15] // Calendar
-})
+    // get to Calendar folder
+    let childFolders: PSTFolder[] = pstFile.getRootFolder().getSubFolders();
+    folder = childFolders[1]; // Root - Mailbox
+    childFolders = folder.getSubFolders();
+    folder = childFolders[4]; // IPM_SUBTREE
+    childFolders = folder.getSubFolders();
+    folder = childFolders[15]; // Calendar
+});
 
 afterAll(() => {
-  pstFile.close()
-})
+    pstFile.close();
+});
 
-function winToJsDate(dateInt: number): Date {
-  return new Date(dateInt * 60 * 1000 - 1.16444736e13) // subtract milliseconds between 1601-01-01 and 1970-01-01
-}
+describe("RecurrencePattern tests", () => {
+    it("should have a Calendar folder", () => {
+        expect(folder.displayName).toEqual("Calendar");
+    });
 
-describe('RecurrencePattern tests', () => {
-  it('should have a Calendar folder', () => {
-    expect(folder.displayName).toEqual('Calendar')
-  })
+    it("should have repeating events", () => {
+        // occurs weekly for 10 weeks
+        let appt = folder.getNextChild() as PSTAppointment;
+        expect(appt.messageClass).toEqual("IPM.Appointment");
+        expect(appt.subject).toEqual("repeats every monday for 10 weeks");
+        expect(appt.startTime).toEqual(new Date("2021-08-09T17:00:00.000Z"));
+        expect(appt.endTime).toEqual(new Date("2021-08-09T18:00:00.000Z"));
+        expect(appt.recurrencePattern).toEqual(
+            "every Monday from 10:00 AM to 11:00 AM"
+        );
+        expect(appt.duration).toEqual(60);
+        let recurrencePattern = new RecurrencePattern(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            appt.recurrenceStructure!
+        );
+        expect(recurrencePattern.occurrenceCount).toEqual(10);
+        expect(recurrencePattern.patternType).toEqual(PatternType.Week);
 
-  it('should have repeating events', () => {
-    // occurs weekly for 10 weeks
-    let appt: PSTAppointment = folder.getNextChild()
-    expect(appt.messageClass).toEqual('IPM.Appointment')
-    expect(appt.subject).toEqual('repeats every monday for 10 weeks')
-    expect(appt.startTime).toEqual(new Date('2021-08-09T17:00:00.000Z'))
-    expect(appt.endTime).toEqual(new Date('2021-08-09T18:00:00.000Z'))
-    expect(appt.recurrencePattern).toEqual('every Monday from 10:00 AM to 11:00 AM')
-    expect(appt.duration).toEqual(60)
-    let recurrencePattern = new RecurrencePattern(appt.recurrenceStructure)
-    expect(recurrencePattern.occurrenceCount).toEqual(10)
-    expect(recurrencePattern.patternType).toEqual(PatternType.Week)
-
-    // occurs daily for 3 days
-    appt = folder.getNextChild()
-    expect(appt.messageClass).toEqual('IPM.Appointment')
-    expect(appt.subject).toEqual('repeats for 3 days')
-    expect(appt.startTime).toEqual(new Date('2021-08-10T19:00:00.000Z'))
-    expect(appt.endTime).toEqual(new Date('2021-08-10T19:30:00.000Z'))
-    expect(appt.recurrencePattern).toEqual('every day from 12:00 PM to 12:30 PM')
-    expect(appt.duration).toEqual(30)
-    recurrencePattern = new RecurrencePattern(appt.recurrenceStructure)
-    // console.log(JSON.stringify(recurrencePattern, null, 2));
-    expect(recurrencePattern.occurrenceCount).toEqual(3)
-    expect(recurrencePattern.patternType).toEqual(PatternType.Day)
-  })
-})
+        // occurs daily for 3 days
+        appt = folder.getNextChild() as PSTAppointment;
+        expect(appt.messageClass).toEqual("IPM.Appointment");
+        expect(appt.subject).toEqual("repeats for 3 days");
+        expect(appt.startTime).toEqual(new Date("2021-08-10T19:00:00.000Z"));
+        expect(appt.endTime).toEqual(new Date("2021-08-10T19:30:00.000Z"));
+        expect(appt.recurrencePattern).toEqual(
+            "every day from 12:00 PM to 12:30 PM"
+        );
+        expect(appt.duration).toEqual(30);
+        recurrencePattern = new RecurrencePattern(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            appt.recurrenceStructure!
+        );
+        // console.log(JSON.stringify(recurrencePattern, null, 2));
+        expect(recurrencePattern.occurrenceCount).toEqual(3);
+        expect(recurrencePattern.patternType).toEqual(PatternType.Day);
+    });
+});

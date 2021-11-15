@@ -62,7 +62,7 @@ function doSaveToFS(
     fs.writeSync(fd, 'Subject: ' + msg.subject)
     fs.writeSync(fd, msg.body)
     fs.closeSync(fd)
-  } catch (err) {
+  } catch (err: unknown) {
     console.error(err)
   }
 
@@ -86,10 +86,10 @@ function doSaveToFS(
           do {
             bytesRead = attachmentStream.read(buffer)
             fs.writeSync(fd, buffer, 0, bytesRead)
-          } while (bytesRead == bufferSize)
+          } while (bytesRead === bufferSize)
           fs.closeSync(fd)
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error(err)
       }
     }
@@ -157,7 +157,7 @@ function processFolder(folder: PSTFolder): void {
   if (folder.contentCount > 0) {
     depth++
     let email: PSTMessage = folder.getNextChild()
-    while (email != null) {
+    while (email !== null) {
       if (verbose) {
         console.log(
           getDepth(depth) +
@@ -201,7 +201,7 @@ function processFolder(folder: PSTFolder): void {
         if (!fs.existsSync(emailFolder)) {
           try {
             fs.mkdirSync(emailFolder)
-          } catch (err) {
+          } catch (err: unknown) {
             console.error(err)
           }
         }
@@ -220,7 +220,7 @@ try {
   if (saveToFS) {
     fs.mkdirSync(topOutputFolder)
   }
-} catch (err) {
+} catch (err: unknown) {
   console.error(err)
 }
 
@@ -240,7 +240,7 @@ directoryListing.forEach((filename) => {
       outputFolder = topOutputFolder + filename + '/'
       fs.mkdirSync(outputFolder)
     }
-  } catch (err) {
+  } catch (err: unknown) {
     console.error(err)
   }
 

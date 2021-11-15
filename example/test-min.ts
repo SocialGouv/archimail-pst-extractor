@@ -1,7 +1,7 @@
 import { PSTMessage } from '../src/PSTMessage.class'
 import { PSTFile } from '../src/PSTFile.class'
 import { PSTFolder } from '../src/PSTFolder.class'
-const resolve = require('path').resolve
+import path from "path"
 
 let depth = -1
 let col = 0
@@ -48,7 +48,7 @@ function processFolder(folder: PSTFolder): void {
   if (folder.contentCount > 0) {
     depth++
     let email: PSTMessage = folder.getNextChild()
-    while (email != null) {
+    while (email !== null) {
       console.log(
         getDepth(depth) +
           'Sender: ' +
