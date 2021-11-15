@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as long from "long";
+import long from "long";
 
 import type { DescriptorIndexNode } from "./DescriptorIndexNode";
 import { PSTActivity } from "./PSTActivity";
@@ -13,14 +12,8 @@ import { PSTNodeInputStream } from "./PSTNodeInputStream";
 import { PSTTableBC } from "./PSTTableBC";
 import { PSTTask } from "./PSTTask";
 
-/**
- * Utility functions for PST components
- * @export
- * @class PSTUtil
- */
-export class PSTUtil {
-  // substitution table for the compressible encryption type.
-  public static compEnc = [
+// substitution table for the compressible encryption type.
+export const compEnc = [
     0x47, 0xf1, 0xb4, 0xe6, 0x0b, 0x6a, 0x72, 0x48, 0x85, 0x4e, 0x9e, 0xeb,
     0xe2, 0xf8, 0x94, 0x53, 0xe0, 0xbb, 0xa0, 0x02, 0xe8, 0x5a, 0x09, 0xab,
     0xdb, 0xe3, 0xba, 0xc6, 0x7c, 0xc3, 0x10, 0xdd, 0x39, 0x05, 0x96, 0x30,
@@ -43,9 +36,9 @@ export class PSTUtil {
     0x99, 0x98, 0xa8, 0x2f, 0x0e, 0x81, 0x65, 0x73, 0xe4, 0xc2, 0xa2, 0x8a,
     0xd4, 0xe1, 0x11, 0xd0, 0x08, 0x8b, 0x2a, 0xf2, 0xed, 0x9a, 0x64, 0x3f,
     0xc1, 0x6c, 0xf9, 0xec,
-  ];
+];
 
-  public static codePages: Map<number, string> = new Map([
+export const codePages: Map<number, string> = new Map([
     [28596, "iso-8859-6"],
     [1256, "windows-1256"],
     [28594, "iso-8859-4"],
@@ -81,10 +74,10 @@ export class PSTUtil {
     [1258, "windows-1258"],
     [28591, "iso-8859-1"],
     [1252, "Windows-1252"],
-  ]);
+]);
 
-  // maps hex codes to names for properties
-  public static propertyName: Map<number, string> = new Map([
+// maps hex codes to names for properties
+export const propertyName: Map<number, string> = new Map([
     [0x0002, "PidTagAlternateRecipientAllowed"],
     [0x0003, "PidTagNameidStreamEntry"],
     [0x0004, "PidTagNameidStreamString"],
@@ -229,502 +222,416 @@ export class PSTUtil {
     [0x7fff, "PidTagAttachmentContactPhoto"],
     [0x3ffa, "PidTagLastModifiedName_W"],
     [0x3ffb, "PidTagLastModifierEntryId"],
-  ]);
+]);
 
-  // Heap node
-  public static NID_TYPE_HID = 0x00;
+// Heap node
+export const NID_TYPE_HID = 0x00;
 
-  // Internal node (section 2.4.1)
-  public static NID_TYPE_INTERNAL = 0x01;
+// Internal node (section 2.4.1)
+export const NID_TYPE_INTERNAL = 0x01;
 
-  // Normal Folder object (PC)
-  public static NID_TYPE_NORMAL_FOLDER = 0x02;
+// Normal Folder object (PC)
+export const NID_TYPE_NORMAL_FOLDER = 0x02;
 
-  // Search Folder object (PC)
-  public static NID_TYPE_SEARCH_FOLDER = 0x03;
+// Search Folder object (PC)
+export const NID_TYPE_SEARCH_FOLDER = 0x03;
 
-  // Normal Message object (PC)
-  public static NID_TYPE_NORMAL_MESSAGE = 0x04;
+// Normal Message object (PC)
+export const NID_TYPE_NORMAL_MESSAGE = 0x04;
 
-  // Attachment object (PC)
-  public static NID_TYPE_ATTACHMENT = 0x05;
+// Attachment object (PC)
+export const NID_TYPE_ATTACHMENT = 0x05;
 
-  // Queue of changed objects for search Folder objects
-  public static NID_TYPE_SEARCH_UPDATE_QUEUE = 0x06;
+// Queue of changed objects for search Folder objects
+export const NID_TYPE_SEARCH_UPDATE_QUEUE = 0x06;
 
-  // Defines the search criteria for a search folder object
-  public static NID_TYPE_SEARCH_CRITERIA_OBJECT = 0x07;
+// Defines the search criteria for a search folder object
+export const NID_TYPE_SEARCH_CRITERIA_OBJECT = 0x07;
 
-  // Folder associated info (FAI) message object (PC)
-  public static NID_TYPE_ASSOC_MESSAGE = 0x08;
+// Folder associated info (FAI) message object (PC)
+export const NID_TYPE_ASSOC_MESSAGE = 0x08;
 
-  // Internal, persisted view-related
-  public static NID_TYPE_CONTENTS_TABLE_INDEX = 0x0a;
+// Internal, persisted view-related
+export const NID_TYPE_CONTENTS_TABLE_INDEX = 0x0a;
 
-  // Receive Folder object (Inbox)
-  public static NID_TYPE_RECEIVE_FOLDER_TABLE = 0x0b;
+// Receive Folder object (Inbox)
+export const NID_TYPE_RECEIVE_FOLDER_TABLE = 0x0b;
 
-  // Outbound queue (Outbox)
-  public static NID_TYPE_OUTGOING_QUEUE_TABLE = 0x0c;
+// Outbound queue (Outbox)
+export const NID_TYPE_OUTGOING_QUEUE_TABLE = 0x0c;
 
-  // Hierarchy table (TC)
-  public static NID_TYPE_HIERARCHY_TABLE = 0x0d;
+// Hierarchy table (TC)
+export const NID_TYPE_HIERARCHY_TABLE = 0x0d;
 
-  // Contents table (TC)
-  public static NID_TYPE_CONTENTS_TABLE = 0x0e;
+// Contents table (TC)
+export const NID_TYPE_CONTENTS_TABLE = 0x0e;
 
-  // FAI contents table (TC)
-  public static NID_TYPE_ASSOC_CONTENTS_TABLE = 0x0f;
+// FAI contents table (TC)
+export const NID_TYPE_ASSOC_CONTENTS_TABLE = 0x0f;
 
-  // Contents table (TC) of a search folder object
-  public static NID_TYPE_SEARCH_CONTENTS_TABLE = 0x10;
+// Contents table (TC) of a search folder object
+export const NID_TYPE_SEARCH_CONTENTS_TABLE = 0x10;
 
-  // Attachment table (TC)
-  public static NID_TYPE_ATTACHMENT_TABLE = 0x11;
+// Attachment table (TC)
+export const NID_TYPE_ATTACHMENT_TABLE = 0x11;
 
-  // Recipient table (TC)
-  public static NID_TYPE_RECIPIENT_TABLE = 0x12;
+// Recipient table (TC)
+export const NID_TYPE_RECIPIENT_TABLE = 0x12;
 
-  // Internal, persisted view-related
-  public static NID_TYPE_SEARCH_TABLE_INDEX = 0x13;
+// Internal, persisted view-related
+export const NID_TYPE_SEARCH_TABLE_INDEX = 0x13;
 
-  // LTP
-  public static NID_TYPE_LTP = 0x1f;
+// LTP
+export const NID_TYPE_LTP = 0x1f;
 
-  /**
-   * Convert little endian bytes to long
-   * @static
-   * @param {Buffer} data
-   * @param {number} [start]
-   * @param {number} [end]
-   * @returns {long}
-   * @memberof PSTUtil
-   */
-  public static convertLittleEndianBytesToLong(
+/**
+ * Convert little endian bytes to long
+ */
+export const convertLittleEndianBytesToLong = (
     data: Buffer,
     start?: number,
     end?: number
-  ): long {
+): long => {
     if (!start) {
-      start = 0;
+        start = 0;
     }
     if (!end) {
-      end = data.length;
+        end = data.length;
     }
 
     let offset: long = long.fromNumber(data[end - 1] & 0xff);
-    let tmpLongValue: long;
+    let tmpLongValue = long.ZERO;
     for (let x = end - 2; x >= start; x--) {
-      offset = offset.shiftLeft(8);
-      tmpLongValue = long.fromNumber(data[x] & 0xff);
-      offset = offset.xor(tmpLongValue);
+        offset = offset.shiftLeft(8);
+        tmpLongValue = long.fromNumber(data[x] & 0xff);
+        offset = offset.xor(tmpLongValue);
     }
 
     return offset;
-  }
+};
 
-  /**
-   * Convert big endian bytes to long
-   * @static
-   * @param {Buffer} data
-   * @param {number} [start]
-   * @param {number} [end]
-   * @returns {long}
-   * @memberof PSTUtil
-   */
-  public static convertBigEndianBytesToLong(
+/**
+ * Convert big endian bytes to long
+ * @static
+ * @param {Buffer} data
+ * @param {number} [start]
+ * @param {number} [end]
+ * @returns {long}
+ * @memberof PSTUtil
+ */
+export const convertBigEndianBytesToLong = (
     data: Buffer,
     start?: number,
     end?: number
-  ): long {
+): long => {
     if (!start) {
-      start = 0;
+        start = 0;
     }
     if (!end) {
-      end = data.length;
+        end = data.length;
     }
 
     let offset: long = long.ZERO;
     for (let x = start; x < end; ++x) {
-      offset = offset.shiftLeft(8);
-      const tmpLongValue = long.fromNumber(data[x] & 0xff);
-      offset = offset.xor(tmpLongValue);
+        offset = offset.shiftLeft(8);
+        const tmpLongValue = long.fromNumber(data[x] & 0xff);
+        offset = offset.xor(tmpLongValue);
     }
 
     return offset;
-  }
+};
 
-  /**
-   * Handle strings using codepages.
-   * @static
-   * @param {number} propertyId
-   * @returns
-   * @memberof PSTUtil
-   */
-  public static getInternetCodePageCharset(
+/**
+ * Handle strings using codepages.
+ */
+export const getInternetCodePageCharset = (
     propertyId: number
-  ): string | undefined {
-    return this.codePages.get(propertyId);
-  }
+): string | undefined => {
+    return codePages.get(propertyId);
+};
 
-  /**
-   * Create JS string from buffer.
-   * @static
-   * @param {Buffer} data
-   * @param {number} stringType
-   * @param {string} codepage
-   * @returns
-   * @memberof PSTUtil
-   */
-  public static createJavascriptString(
+/**
+ * Create JS string from buffer.
+ */
+export const createJavascriptString = (
     data: Buffer,
     stringType: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    codepage?: string
-  ): string {
+    _codepage?: string
+): string => {
     // TODO - codepage is not used...
     try {
-      if (stringType == 0x1f) {
-        // convert and trim any nulls
-        return data.toString("utf16le").replace(/\0/g, "");
-      }
-    } catch (err) {
-      console.error(
-        `PSTUtil::createJavascriptString Unable to decode string\n${err}`
-      );
-      throw err;
+        if (stringType === 0x1f) {
+            // convert and trim any nulls
+            return data.toString("utf16le").replace(/\0/g, "");
+        }
+    } catch (err: unknown) {
+        console.error(
+            `PSTUtil::createJavascriptString Unable to decode string\n${err}`
+        );
+        throw err;
     }
     return "";
-  }
+};
 
-  /**
-   * Copy from one array to another
-   * @static
-   * @param {Buffer} src
-   * @param {number} srcPos
-   * @param {Buffer} dest
-   * @param {number} destPos
-   * @param {number} length
-   * @memberof PSTUtil
-   */
-  public static arraycopy(
+/**
+ * Copy from one array to another
+ */
+export const arraycopy = (
     src: Buffer,
     srcPos: number,
     dest: Buffer,
     destPos: number,
     length: number
-  ): void {
+): void => {
     // TODO FIX THIS - TOO SLOW?
     let s = srcPos;
     let d = destPos;
     let i = 0;
     while (i++ < length) {
-      dest[d++] = src[s++];
+        dest[d++] = src[s++];
     }
-  }
+};
 
-  /**
-   * Determine if character is alphanumeric
-   *
-   * @static
-   * @memberof PSTUtil
-   */
-  public static isAlphaNumeric = (ch: string): boolean => {
+/**
+ * Determine if character is alphanumeric
+ */
+export const isAlphaNumeric = (ch: string): boolean => {
     return /^[a-z0-9]+$/i.exec(ch) !== null;
-  };
+};
 
-  /**
-   * Decode a lump of data that has been encrypted with the compressible encryption
-   * @static
-   * @param {Buffer} data
-   * @returns {Buffer}
-   * @memberof PSTUtil
-   */
-  public static decode(data: Buffer): Buffer {
-    let temp;
+/**
+ * Decode a lump of data that has been encrypted with the compressible encryption
+ * @static
+ * @param {Buffer} data
+ * @returns {Buffer}
+ * @memberof PSTUtil
+ */
+export const decode = (data: Buffer): Buffer => {
+    let temp = 0;
     for (let x = 0; x < data.length; x++) {
-      temp = data[x] & 0xff;
-      data[x] = this.compEnc[temp];
+        temp = data[x] & 0xff;
+        data[x] = compEnc[temp];
     }
 
     return data;
-  }
+};
 
-  /**
-   * Detect and load a PST Object from a file with the specified descriptor index
-   * @static
-   * @param {PSTFile} theFile
-   * @param {long} descriptorIndex
-   * @returns {*}
-   * @memberof PSTUtil
-   */
-  public static detectAndLoadPSTObject(
+/**
+ * Detect and load a PST Object from a file with the specified descriptor index
+ */
+export const detectAndLoadPSTObject = (
     theFile: PSTFile,
-    descriptorIndex: long
-  ): any;
-  public static detectAndLoadPSTObject(
-    theFile: PSTFile,
-    folderIndexNode: DescriptorIndexNode
-  ): any;
-  public static detectAndLoadPSTObject(theFile: PSTFile, arg: any): any {
-    let folderIndexNode = arg;
-    if (typeof arg === "object" && arg.hasOwnProperty("low")) {
-      folderIndexNode = theFile.getDescriptorIndexNode(arg);
+    index: DescriptorIndexNode | long
+): PSTFolder | PSTMessage => {
+    let folderIndexNode = index as DescriptorIndexNode;
+    if (long.isLong(index)) {
+        folderIndexNode = theFile.getDescriptorIndexNode(index);
     }
 
     const nidType = folderIndexNode.descriptorIdentifier & 0x1f;
-    if (nidType == 0x02 || nidType == 0x03 || nidType == 0x04) {
-      const table: PSTTableBC = new PSTTableBC(
-        new PSTNodeInputStream(
-          theFile,
-          theFile.getOffsetIndexNode(folderIndexNode.dataOffsetIndexIdentifier)
-        )
-      );
+    if (nidType === 0x02 || nidType === 0x03 || nidType === 0x04) {
+        const table: PSTTableBC = new PSTTableBC(
+            new PSTNodeInputStream(
+                theFile,
+                theFile.getOffsetIndexNode(
+                    folderIndexNode.dataOffsetIndexIdentifier
+                )
+            )
+        );
 
-      let localDescriptorItems: Map<number, PSTDescriptorItem> | undefined =
-        undefined;
-      if (folderIndexNode.localDescriptorsOffsetIndexIdentifier != 0) {
-        localDescriptorItems = theFile.getPSTDescriptorItems(
-          folderIndexNode.localDescriptorsOffsetIndexIdentifier
-        );
-      }
+        let localDescriptorItems: Map<number, PSTDescriptorItem> | undefined =
+            undefined;
+        if (!folderIndexNode.localDescriptorsOffsetIndexIdentifier.eq(0)) {
+            localDescriptorItems = theFile.getPSTDescriptorItems(
+                folderIndexNode.localDescriptorsOffsetIndexIdentifier
+            );
+        }
 
-      if (nidType == 0x02 || nidType == 0x03) {
-        return new PSTFolder(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-      } else {
-        return this.createAppropriatePSTMessageObject(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-      }
+        if (nidType === 0x02 || nidType === 0x03) {
+            return new PSTFolder(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        } else {
+            return createAppropriatePSTMessageObject(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        }
     } else {
-      throw new Error(
-        `PSTUtil::detectAndLoadPSTObject Unknown child type with offset id: ${folderIndexNode.localDescriptorsOffsetIndexIdentifier}`
-      );
+        throw new Error(
+            `PSTUtil::detectAndLoadPSTObject Unknown child type with offset id: ${folderIndexNode.localDescriptorsOffsetIndexIdentifier}`
+        );
     }
-  }
+};
 
-  /**
-   * Creates object based on message class
-   * https://msdn.microsoft.com/en-us/vba/outlook-vba/articles/item-types-and-message-classes
-   * @static
-   * @param {PSTFile} theFile
-   * @param {DescriptorIndexNode} folderIndexNode
-   * @param {PSTTableBC} table
-   * @param {Map<number, PSTDescriptorItem>} localDescriptorItems
-   * @returns {PSTMessage}
-   * @memberof PSTUtil
-   */
-  public static createAppropriatePSTMessageObject(
+/**
+ * Creates object based on message class
+ * https://msdn.microsoft.com/en-us/vba/outlook-vba/articles/item-types-and-message-classes
+ */
+export const createAppropriatePSTMessageObject = (
     theFile: PSTFile,
     folderIndexNode: DescriptorIndexNode,
     table: PSTTableBC,
     localDescriptorItems?: Map<number, PSTDescriptorItem>
-  ): PSTMessage {
+): PSTMessage => {
     const item = table.getItems().get(0x001a);
     let messageClass = "";
-    if (item != null) {
-      messageClass = item.getStringValue();
+    if (item) {
+        messageClass = item.getStringValue();
     }
     switch (messageClass) {
-      case "IPM.Note":
-      case "IPM.Note.SMIME.MultipartSigned":
-      case "IPM.Note.Agenda":
-        // email message
-        const msg = new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(msg.body);
-        // Log.debug1(msg.numberOfRecipients.toString());
-        // Log.debug1(msg.colorCategories.toString());
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return msg;
-      case "IPM.Appointment":
-      case "IPM.OLE.CLASS.{00061055-0000-0000-C000-000000000046}":
-      case "IPM.Schedule.Meeting.Canceled":
-      case "IPM.Schedule.Meeting.Resp.Pos":
-      case "IPM.Schedule.Meeting.Resp.Tent":
-      case "IPM.Schedule.Meeting.Notification.Forward":
-      case "IPM.Schedule.Meeting.Resp.Neg":
-        // appointment
-        // messageClass.startsWith('IPM.Schedule.Meeting')
-        const apt = new PSTAppointment(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return apt;
-      case "IPM.Contact":
-        // contact
-        const contact = new PSTContact(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return contact;
-      case "IPM.Task":
-        // task
-        const task = new PSTTask(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return task;
-      case "IPM.Activity":
-        // journal entry
-        const activity = new PSTActivity(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return activity;
-      case "IPM.Post.Rss":
-        // debugger;
-        // Rss Feed
-        const rss = new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return rss;
-      case "IPM.DistList":
-        // debugger;
-        // Distribution list
-        const dl = new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return dl;
-      // return new PSTDistList(theFile, folderIndexNode, table, localDescriptorItems);
-      case "IPM.Note.Rules.OofTemplate.Microsoft":
-        // debugger;
-        // Out of Office rule
-        const oof = new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return oof;
-      case "IPM.Schedule.Meeting.Request":
-        // Meeting request
-        const meetReq = new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return meetReq;
-      case "REPORT.IPM.Note.NDR":
-        // Receipt of non-delivery
-        const ndr = new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return ndr;
-      case "IPM.StickyNote":
-        // Sticky note
-        const sticky = new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-        // Log.debug1(JSON.stringify(msg, null, 2));
-        return sticky;
-      case "REPORT.IPM.Note.IPNRN":
-        // Read receipt
-        // debugger;
-        // console.log('PSTUtil::createAppropriatePSTMessageObject REPORT.IPM.Note.IPNRN');
-        return new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-      case "REPORT.IPM.Note.IPNNRN":
-        // Not-read notification
-        // debugger;
-        // console.log('PSTUtil::createAppropriatePSTMessageObject REPORT.IPM.Note.IPNNRN');
-        return new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-      case "IPM.Schedule.Meeting.Request":
-        // Meeting request
-        // debugger;
-        // console.log('PSTUtil::createAppropriatePSTMessageObject IPM.Schedule.Meeting.Request');
-        return new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-      case "REPORT.IPM.Note.DR":
-        // Delivery receipt
-        // debugger;
-        // console.log('PSTUtil::createAppropriatePSTMessageObject REPORT.IPM.Note.DR');
-        return new PSTMessage(
-          theFile,
-          folderIndexNode,
-          table,
-          localDescriptorItems
-        );
-      default:
-        console.error(
-          `PSTUtil::createAppropriatePSTMessageObject unknown message type: ${messageClass}`
-        );
+        case "IPM.Note":
+        case "IPM.Note.SMIME.MultipartSigned":
+        case "IPM.Note.Agenda":
+            // email message
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "IPM.Appointment":
+        case "IPM.OLE.CLASS.{00061055-0000-0000-C000-000000000046}":
+        case "IPM.Schedule.Meeting.Canceled":
+        case "IPM.Schedule.Meeting.Resp.Pos":
+        case "IPM.Schedule.Meeting.Resp.Tent":
+        case "IPM.Schedule.Meeting.Notification.Forward":
+        case "IPM.Schedule.Meeting.Resp.Neg":
+            // appointment
+            // messageClass.startsWith('IPM.Schedule.Meeting')
+            return new PSTAppointment(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "IPM.Contact":
+            // contact
+            return new PSTContact(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "IPM.Task":
+            // task
+            return new PSTTask(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "IPM.Activity":
+            // journal entry
+            return new PSTActivity(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "IPM.Post.Rss":
+            // Rss Feed
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "IPM.DistList":
+            // Distribution list
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        // return new PSTDistList(theFile, folderIndexNode, table, localDescriptorItems);
+        case "IPM.Note.Rules.OofTemplate.Microsoft":
+            // Out of Office rule
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "IPM.Schedule.Meeting.Request":
+            // Meeting request
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "REPORT.IPM.Note.NDR":
+            // Receipt of non-delivery
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "IPM.StickyNote":
+            // Sticky note
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "REPORT.IPM.Note.IPNRN":
+            // Read receipt
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "REPORT.IPM.Note.IPNNRN":
+            // Not-read notification
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        case "REPORT.IPM.Note.DR":
+            // Delivery receipt
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
+        default:
+            console.error(
+                `[PSTUtil] createAppropriatePSTMessageObject unknown message type: ${messageClass}`
+            );
     }
     return new PSTMessage(
-      theFile,
-      folderIndexNode,
-      table,
-      localDescriptorItems
+        theFile,
+        folderIndexNode,
+        table,
+        localDescriptorItems
     );
-  }
+};
 
-  /**
-   * Converts a Windows FILETIME into a {@link Date}. The Windows FILETIME structure holds a date and time associated with a
-   * file. The structure identifies a 64-bit integer specifying the number of 100-nanosecond intervals which have passed since
-   * January 1, 1601. This 64-bit value is split into the two double words stored in the structure.
-   *
-   * @static
-   * @param {long} hi
-   * @param {long} low
-   * @returns {Date}
-   * @memberof PSTUtil
-   */
-  public static filetimeToDate(hi: long, low: long): Date {
+/**
+ * Converts a Windows FILETIME into a {@link Date}. The Windows FILETIME structure holds a date and time associated with a
+ * file. The structure identifies a 64-bit integer specifying the number of 100-nanosecond intervals which have passed since
+ * January 1, 1601. This 64-bit value is split into the two double words stored in the structure.
+ *
+ * @static
+ * @param {long} hi
+ * @param {long} low
+ * @returns {Date}
+ * @memberof PSTUtil
+ */
+export const filetimeToDate = (hi: long, low: long): Date => {
     const h: long = hi.shiftLeft(32);
     const l: long = low.and(0xffffffff);
     const filetime = h.or(l);
@@ -732,5 +639,4 @@ export class PSTUtil {
     const epochDiff: long = long.fromValue("11644473600000");
     const msSince19700101: long = msSince16010101.subtract(epochDiff);
     return new Date(msSince19700101.toNumber());
-  }
-}
+};

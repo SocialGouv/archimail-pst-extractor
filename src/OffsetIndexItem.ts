@@ -1,72 +1,74 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type * as long from "long";
+import type long from "long";
 
 import { PSTFile } from "./PSTFile";
-import { PSTUtil } from "./PSTUtil";
+import * as PSTUtil from "./PSTUtil";
 
 export class OffsetIndexItem {
-  private readonly _indexIdentifier: long;
+    private readonly _indexIdentifier: long;
 
-  public get indexIdentifier(): long {
-    return this._indexIdentifier;
-  }
-
-  private readonly _fileOffset: long;
-
-  public get fileOffset(): long {
-    return this._fileOffset;
-  }
-
-  private readonly _size: number;
-
-  public get size(): number {
-    return this._size;
-  }
-
-  private readonly cRef: long;
-
-  /**
-   * Creates an instance of OffsetIndexItem, part of the node table.
-   * @param {Buffer} data
-   * @param {number} pstFileType
-   * @memberof OffsetIndexItem
-   */
-  constructor(data: Buffer, pstFileType: number) {
-    if (pstFileType == PSTFile.PST_TYPE_ANSI) {
-      this._indexIdentifier = PSTUtil.convertLittleEndianBytesToLong(
-        data,
-        0,
-        4
-      );
-      this._fileOffset = PSTUtil.convertLittleEndianBytesToLong(data, 4, 8);
-      this._size = PSTUtil.convertLittleEndianBytesToLong(
-        data,
-        8,
-        10
-      ).toNumber();
-      this.cRef = PSTUtil.convertLittleEndianBytesToLong(data, 10, 12);
-    } else {
-      this._indexIdentifier = PSTUtil.convertLittleEndianBytesToLong(
-        data,
-        0,
-        8
-      );
-      this._fileOffset = PSTUtil.convertLittleEndianBytesToLong(data, 8, 16);
-      this._size = PSTUtil.convertLittleEndianBytesToLong(
-        data,
-        16,
-        18
-      ).toNumber();
-      this.cRef = PSTUtil.convertLittleEndianBytesToLong(data, 16, 18);
+    public get indexIdentifier(): long {
+        return this._indexIdentifier;
     }
-  }
 
-  /**
-   * JSON stringify the object properties.
-   * @returns {string}
-   * @memberof OffsetIndexItem
-   */
-  public toJSON(): any {
-    return this;
-  }
+    private readonly _fileOffset: long;
+
+    public get fileOffset(): long {
+        return this._fileOffset;
+    }
+
+    private readonly _size: number;
+
+    public get size(): number {
+        return this._size;
+    }
+
+    private readonly cRef: long;
+
+    /**
+     * Creates an instance of OffsetIndexItem, part of the node table.
+     */
+    constructor(data: Buffer, pstFileType: number) {
+        if (pstFileType === PSTFile.PST_TYPE_ANSI) {
+            this._indexIdentifier = PSTUtil.convertLittleEndianBytesToLong(
+                data,
+                0,
+                4
+            );
+            this._fileOffset = PSTUtil.convertLittleEndianBytesToLong(
+                data,
+                4,
+                8
+            );
+            this._size = PSTUtil.convertLittleEndianBytesToLong(
+                data,
+                8,
+                10
+            ).toNumber();
+            this.cRef = PSTUtil.convertLittleEndianBytesToLong(data, 10, 12);
+        } else {
+            this._indexIdentifier = PSTUtil.convertLittleEndianBytesToLong(
+                data,
+                0,
+                8
+            );
+            this._fileOffset = PSTUtil.convertLittleEndianBytesToLong(
+                data,
+                8,
+                16
+            );
+            this._size = PSTUtil.convertLittleEndianBytesToLong(
+                data,
+                16,
+                18
+            ).toNumber();
+            this.cRef = PSTUtil.convertLittleEndianBytesToLong(data, 16, 18);
+        }
+    }
+
+    /**
+     * JSON stringify the object properties.
+     */
+    public toJSON(): unknown {
+        return this;
+    }
 }
