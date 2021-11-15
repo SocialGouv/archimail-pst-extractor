@@ -1,6 +1,9 @@
-export { PSTFile } from './PSTFile.class'
-export { PSTTask } from './PSTTask.class'
-export { PSTRecipient } from './PSTRecipient.class'
-export { PSTAttachment } from './PSTAttachment.class'
-export { PSTMessage } from './PSTMessage.class'
-export { PSTFolder } from './PSTFolder.class'
+export { PSTActivity } from "./PSTActivity";
+export { PSTAppointment } from "./PSTAppointment";
+export { PSTAttachment } from "./PSTAttachment";
+export { PSTContact } from "./PSTContact";
+export { PSTFile } from "./PSTFile";
+export { PSTFolder } from "./PSTFolder";
+export { PSTMessage } from "./PSTMessage";
+export { PSTRecipient } from "./PSTRecipient";
+export { PSTTask } from "./PSTTask";

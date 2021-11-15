@@ -1,0 +1,28 @@
+{
+  "enabled": true,
+  "extends": [
+    "github>SocialGouv/renovate-config:light"
+  ],
+  "baseBranches": [
+    "dev"
+  ],
+  "dependencyDashboardLabels": [
+    "bot",
+    "dependencies"
+  ],
+  "updatePinnedDependencies": false,
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "@types/node"
+      ],
+      "allowedVersions": "<15"
+    },
+    {
+      "matchPackageNames": [
+        "eslint"
+      ],
+      "allowedVersions": "<8"
+    }
+  ]
+}
