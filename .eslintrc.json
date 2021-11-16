@@ -1,32 +1,40 @@
 {
   "ignorePatterns": "node_modules",
-  "extends": "@socialgouv/eslint-config-typescript",
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json",
-    "sourceType": "module"
-  },
-  "rules": {
-    "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/no-misused-promises": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "import/default": "off",
-    "no-unused-vars": "off",
-    "prefer-template": "warn",
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "warn",
-      {
-        "args": "after-used",
-        "argsIgnorePattern": "^_",
-        "vars": "all",
-        "varsIgnorePattern": "^_"
-      }
-    ]
-  },
-  "plugins": [
-    "unused-imports"
-  ],
+  "extends": "@socialgouv/eslint-config-recommended",
   "reportUnusedDisableDirectives": true,
-  "root": true
+  "root": true,
+  "overrides": [
+    {
+      "extends": "@socialgouv/eslint-config-typescript",
+      "files": [
+        "**/*.ts"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "./tsconfig.json",
+        "sourceType": "module"
+      },
+      "rules": {
+        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "import/default": "off",
+        "no-unused-vars": "off",
+        "prefer-template": "warn",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "args": "after-used",
+            "argsIgnorePattern": "^_",
+            "vars": "all",
+            "varsIgnorePattern": "^_"
+          }
+        ]
+      },
+      "plugins": [
+        "unused-imports"
+      ]
+    }
+  ]
 }

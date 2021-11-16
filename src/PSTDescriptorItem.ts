@@ -1,8 +1,8 @@
 import long from "long";
 
+import { PSTUtil } from ".";
 import { PSTFile } from "./PSTFile";
 import type { PSTNodeInputStream } from "./PSTNodeInputStream";
-import * as PSTUtil from "./PSTUtil";
 
 export class PSTDescriptorItem {
     private dataBlockData: Buffer | null = null;

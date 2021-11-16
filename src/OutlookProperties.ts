@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-// See PSTMessage.class for details on these properties
+// See PSTMessage for details on these properties
 export enum OutlookProperties {
     PSETID_Common = 1,
     PSETID_Address = 2,

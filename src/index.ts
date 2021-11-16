@@ -7,3 +7,4 @@ export { PSTFolder } from "./PSTFolder";
 export { PSTMessage } from "./PSTMessage";
 export { PSTRecipient } from "./PSTRecipient";
 export { PSTTask } from "./PSTTask";
+export * as PSTUtil from "./PSTUtil";

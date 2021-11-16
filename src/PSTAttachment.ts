@@ -1,5 +1,6 @@
 import long from "long";
 
+import { PSTUtil } from ".";
 import { OutlookProperties } from "./OutlookProperties";
 import type { PSTDescriptorItem } from "./PSTDescriptorItem";
 import type { PSTFile } from "./PSTFile";
@@ -7,7 +8,6 @@ import type { PSTMessage } from "./PSTMessage";
 import { PSTNodeInputStream } from "./PSTNodeInputStream";
 import { PSTObject } from "./PSTObject";
 import { PSTTableBC } from "./PSTTableBC";
-import * as PSTUtil from "./PSTUtil";
 
 /**
  * Class containing attachment information.
@@ -131,7 +131,7 @@ export class PSTAttachment extends PSTObject {
                 }
             } catch (err: unknown) {
                 console.error(
-                    `PSTAttachment::embeddedPSTMessage createAppropriatePSTMessageObject failed\n${err}`
+                    `PSTAttachment::embeddedPSTMessage PSTUtil.createAppropriatePSTMessageObject failed\n${err}`
                 );
                 throw err;
             }

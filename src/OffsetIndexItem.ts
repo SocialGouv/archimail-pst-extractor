@@ -1,7 +1,6 @@
 import type long from "long";
 
-import { PSTFile } from "./PSTFile";
-import * as PSTUtil from "./PSTUtil";
+import { PSTFile, PSTUtil } from ".";
 
 export class OffsetIndexItem {
     private readonly _indexIdentifier: long;

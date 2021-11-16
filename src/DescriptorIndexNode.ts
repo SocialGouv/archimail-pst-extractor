@@ -1,7 +1,7 @@
 import type long from "long";
 
+import { PSTUtil } from ".";
 import { PSTFile } from "./PSTFile";
-import * as PSTUtil from "./PSTUtil";
 
 // DescriptorIndexNode is a leaf item from the Descriptor index b-tree
 // It is like a pointer to an element in the PST file, everything has one...

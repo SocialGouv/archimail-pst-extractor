@@ -11,6 +11,7 @@
     }
   },
   "rules": {
-    "@typescript-eslint/init-declarations": "off"
+    "@typescript-eslint/init-declarations": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off"
   }
 }

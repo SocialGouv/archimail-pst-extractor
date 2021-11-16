@@ -1,11 +1,11 @@
 /* eslint-disable no-fallthrough */
 import long from "long";
 
+import { PSTUtil } from ".";
 import type { PSTDescriptorItem } from "./PSTDescriptorItem";
 import type { PSTNodeInputStream } from "./PSTNodeInputStream";
 import { PSTTable } from "./PSTTable";
 import { PSTTableItem } from "./PSTTableItem";
-import * as PSTUtil from "./PSTUtil";
 
 export class PSTTableBC extends PSTTable {
     private readonly items: Map<number, PSTTableItem> = new Map();

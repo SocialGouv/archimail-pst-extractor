@@ -1,5 +1,6 @@
 import long from "long";
 
+import { PSTUtil } from ".";
 import type { DescriptorIndexNode } from "./DescriptorIndexNode";
 import { LZFu } from "./LZFu";
 import { OutlookProperties } from "./OutlookProperties";
@@ -11,7 +12,6 @@ import { PSTObject } from "./PSTObject";
 import { PSTRecipient } from "./PSTRecipient";
 import { PSTTable7C } from "./PSTTable7C";
 import { PSTTableBC } from "./PSTTableBC";
-import * as PSTUtil from "./PSTUtil";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 enum PidTagMessageFlags {

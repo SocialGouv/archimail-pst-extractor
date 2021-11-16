@@ -2,6 +2,7 @@ import * as fs from "fs";
 import long from "long";
 import { unparse } from "uuid-parse";
 
+import { PSTUtil } from ".";
 import { DescriptorIndexNode } from "./DescriptorIndexNode";
 import { NodeMap } from "./NodeMap";
 import { OffsetIndexItem } from "./OffsetIndexItem";
@@ -11,7 +12,6 @@ import { PSTMessageStore } from "./PSTMessageStore";
 import { PSTNodeInputStream } from "./PSTNodeInputStream";
 import { PSTTableBC } from "./PSTTableBC";
 import type { PSTTableItem } from "./PSTTableItem";
-import * as PSTUtil from "./PSTUtil";
 
 export class PSTFile {
     public static ENCRYPTION_TYPE_NONE = 0;
@@ -671,8 +671,9 @@ export class PSTFile {
                 this.readCompletely(numberOfItemsBytes);
             } else {
                 numberOfItems = this.read();
-                this.read(); // maxNumberOfItems
+                void this.read(); // maxNumberOfItems
             }
+            void this.read(); // itemSize
             const levelsToLeaf = this.read();
 
             if (levelsToLeaf > 0) {

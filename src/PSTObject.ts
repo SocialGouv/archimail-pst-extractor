@@ -1,5 +1,6 @@
 import long from "long";
 
+import { PSTUtil } from ".";
 import type { DescriptorIndexNode } from "./DescriptorIndexNode";
 import type { OffsetIndexItem } from "./OffsetIndexItem";
 import { OutlookProperties } from "./OutlookProperties";
@@ -8,7 +9,6 @@ import type { PSTFile } from "./PSTFile";
 import { PSTNodeInputStream } from "./PSTNodeInputStream";
 import { PSTTableBC } from "./PSTTableBC";
 import type { PSTTableItem } from "./PSTTableItem";
-import * as PSTUtil from "./PSTUtil";
 
 export abstract class PSTObject {
     protected pstFile: PSTFile;

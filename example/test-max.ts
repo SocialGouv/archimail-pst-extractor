@@ -1,8 +1,8 @@
 import * as fs from 'fs'
-import { PSTAttachment } from '../src/PSTAttachment.class'
-import { PSTFile } from '../src/PSTFile.class'
-import { PSTFolder } from '../src/PSTFolder.class'
-import { PSTMessage } from '../src/PSTMessage.class'
+import { PSTAttachment } from '..//PSTAttachment.class'
+import { PSTFile } from '..//PSTFile.class'
+import { PSTFolder } from '..//PSTFolder.class'
+import { PSTMessage } from '..//PSTMessage.class'
 
 // TODO - location of pst files
 const pstFolder = 'C:/github/testdata/'

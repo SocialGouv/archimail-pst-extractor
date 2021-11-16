@@ -2,9 +2,15 @@
   "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
     "resolveJsonModule": true,
+    // "baseUrl": "../",
+    // "paths": {
+    //   "../": [
+    //     "src"
+    //   ]
+    // }
   },
   "include": [
-    "../src/**/*.ts",
-    "./",
+    "../src/*",
+    "./"
   ]
 }

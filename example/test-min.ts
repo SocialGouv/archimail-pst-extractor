@@ -1,6 +1,6 @@
-import { PSTMessage } from '../src/PSTMessage.class'
-import { PSTFile } from '../src/PSTFile.class'
-import { PSTFolder } from '../src/PSTFolder.class'
+import { PSTMessage } from '..//PSTMessage.class'
+import { PSTFile } from '..//PSTFile.class'
+import { PSTFolder } from '..//PSTFolder.class'
 import path from "path"
 
 let depth = -1

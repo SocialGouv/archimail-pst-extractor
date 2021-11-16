@@ -1,6 +1,6 @@
 import long from "long";
 
-import * as PSTUtil from "./PSTUtil";
+import { PSTUtil } from ".";
 
 /**
  * Generic table item.

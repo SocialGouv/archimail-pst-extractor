@@ -1,10 +1,10 @@
 import long from "long";
 import * as zlib from "zlib";
 
+import { PSTUtil } from ".";
 import { OffsetIndexItem } from "./OffsetIndexItem";
 import { PSTDescriptorItem } from "./PSTDescriptorItem";
 import { PSTFile } from "./PSTFile";
-import * as PSTUtil from "./PSTUtil";
 
 export class PSTNodeInputStream {
     private totalLoopCount = 0;
@@ -281,7 +281,7 @@ export class PSTNodeInputStream {
             this.totalLoopCount++;
         }
 
-        // decode the array if required
+        // PSTUtil.decode the array if required
         if (this.encrypted) {
             PSTUtil.decode(output);
         }

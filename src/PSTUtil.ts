@@ -1,16 +1,18 @@
 import long from "long";
 
+import type { PSTFile } from ".";
+import {
+    PSTActivity,
+    PSTAppointment,
+    PSTContact,
+    PSTFolder,
+    PSTMessage,
+    PSTTask,
+} from ".";
 import type { DescriptorIndexNode } from "./DescriptorIndexNode";
-import { PSTActivity } from "./PSTActivity";
-import { PSTAppointment } from "./PSTAppointment";
-import { PSTContact } from "./PSTContact";
 import type { PSTDescriptorItem } from "./PSTDescriptorItem";
-import type { PSTFile } from "./PSTFile";
-import { PSTFolder } from "./PSTFolder";
-import { PSTMessage } from "./PSTMessage";
 import { PSTNodeInputStream } from "./PSTNodeInputStream";
 import { PSTTableBC } from "./PSTTableBC";
-import { PSTTask } from "./PSTTask";
 
 // substitution table for the compressible encryption type.
 export const compEnc = [
@@ -417,6 +419,27 @@ export const decode = (data: Buffer): Buffer => {
 };
 
 /**
+ * Converts a Windows FILETIME into a {@link Date}. The Windows FILETIME structure holds a date and time associated with a
+ * file. The structure identifies a 64-bit integer specifying the number of 100-nanosecond intervals which have passed since
+ * January 1, 1601. This 64-bit value is split into the two double words stored in the structure.
+ *
+ * @static
+ * @param {long} hi
+ * @param {long} low
+ * @returns {Date}
+ * @memberof PSTUtil
+ */
+export const filetimeToDate = (hi: long, low: long): Date => {
+    const h: long = hi.shiftLeft(32);
+    const l: long = low.and(0xffffffff);
+    const filetime = h.or(l);
+    const msSince16010101: long = filetime.divide(1000 * 10);
+    const epochDiff: long = long.fromValue("11644473600000");
+    const msSince19700101: long = msSince16010101.subtract(epochDiff);
+    return new Date(msSince19700101.toNumber());
+};
+
+/**
  * Detect and load a PST Object from a file with the specified descriptor index
  */
 export const detectAndLoadPSTObject = (
@@ -618,25 +641,4 @@ export const createAppropriatePSTMessageObject = (
         table,
         localDescriptorItems
     );
-};
-
-/**
- * Converts a Windows FILETIME into a {@link Date}. The Windows FILETIME structure holds a date and time associated with a
- * file. The structure identifies a 64-bit integer specifying the number of 100-nanosecond intervals which have passed since
- * January 1, 1601. This 64-bit value is split into the two double words stored in the structure.
- *
- * @static
- * @param {long} hi
- * @param {long} low
- * @returns {Date}
- * @memberof PSTUtil
- */
-export const filetimeToDate = (hi: long, low: long): Date => {
-    const h: long = hi.shiftLeft(32);
-    const l: long = low.and(0xffffffff);
-    const filetime = h.or(l);
-    const msSince16010101: long = filetime.divide(1000 * 10);
-    const epochDiff: long = long.fromValue("11644473600000");
-    const msSince19700101: long = msSince16010101.subtract(epochDiff);
-    return new Date(msSince19700101.toNumber());
 };

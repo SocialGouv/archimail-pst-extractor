@@ -1,5 +1,6 @@
 import long from "long";
 
+import { PSTUtil } from ".";
 import type { DescriptorIndexNode } from "./DescriptorIndexNode";
 import { OutlookProperties } from "./OutlookProperties";
 import type { PSTDescriptorItem } from "./PSTDescriptorItem";
@@ -10,7 +11,6 @@ import { PSTObject } from "./PSTObject";
 import { PSTTable7C } from "./PSTTable7C";
 import type { PSTTableBC } from "./PSTTableBC";
 import type { PSTTableItem } from "./PSTTableItem";
-import * as PSTUtil from "./PSTUtil";
 
 /**
  * Represents a folder in the PST File.  Allows you to access child folders or items.
