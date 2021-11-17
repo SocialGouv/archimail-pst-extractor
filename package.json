@@ -1,5 +1,5 @@
 {
-  "name": "@socialgouv/pst-extractor",
+  "name": "@socialgouv/archimail-pst-extractor",
   "version": "0.0.1",
   "description": "Extract objects from MS Outlook/Exchange PST files",
   "main": "dist/index.js",
@@ -13,8 +13,7 @@
     "test": "jest --coverage",
     "lint": "eslint src/",
     "lint:test": "eslint -c tests/.eslintrc.json 'tests/**/*.ts*'",
-    "lint:fix": "yarn lint --fix && yarn lint:test --fix",
-    "v": "echo $npm_package_version"
+    "lint:fix": "yarn lint --fix && yarn lint:test --fix"
   },
   "repository": "git@github.com:SocialGouv/archimail-pst-extractor.git",
   "author": "Fabrique des ministère sociaux",
