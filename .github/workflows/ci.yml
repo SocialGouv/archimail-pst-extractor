@@ -4,9 +4,11 @@ on:
     branches: [main, dev]
   pull_request:
     branches: [main, dev]
+  release:
+    types: [released]
 
 jobs:
-  ci:
+  quality:
     name: Run tests
     steps:
       - uses: actions/checkout@v2
@@ -37,3 +39,35 @@ jobs:
         uses: codecov/codecov-action@v2
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  release:
+    name: Release on NPM
+    if: github.event_name == 'release'
+    needs:
+      - quality
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Read Node version from .nvmrc
+        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        id: nvm
+
+      - name: Set up Node.js v${{ steps.nvm.outputs.NVMRC }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+          cache: yarn
+
+      - name: Installing
+        run: yarn --frozen-lockfile --perfer-offline
+
+      - name: Build
+        run: yarn build
+
+      - name: Publish
+        run: |
+            npm config set access public
+            npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+            npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.SOCIALGROOVYBOT_NPM_TOKEN }}
