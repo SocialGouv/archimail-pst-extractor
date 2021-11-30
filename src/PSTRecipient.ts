@@ -95,3 +95,14 @@ export class PSTRecipient extends PSTObject {
         return clone;
     }
 }
+
+export const enum RecipientType {
+    originator = 0x00000000,
+    primary = 0x00000001,
+    cc = 0x00000002,
+    bcc = 0x00000003,
+}
+
+export const enum RecipientTags {
+    sendable = 0x00000001,
+}

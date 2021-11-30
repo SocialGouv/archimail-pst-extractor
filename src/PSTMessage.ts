@@ -12,6 +12,7 @@ import { PSTObject } from "./PSTObject";
 import { PSTRecipient } from "./PSTRecipient";
 import { PSTTable7C } from "./PSTTable7C";
 import { PSTTableBC } from "./PSTTableBC";
+import type { MessageClass } from "./PSTUtil";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 enum PidTagMessageFlags {
@@ -41,6 +42,8 @@ export class PSTMessage extends PSTObject {
 
     private attachmentTable: PSTTable7C | null = null;
 
+    private recipients?: PSTRecipient[];
+
     /**
      * Creates an instance of PSTMessage. PST Message contains functions that are common across most MAPI objects.
      * Note that many of these functions may not be applicable for the item in question,
@@ -67,29 +70,26 @@ export class PSTMessage extends PSTObject {
 
     /**
      * Get specific recipient.
+     * @deprecated
      */
-    public getRecipient(recipientNumber: number): PSTRecipient | null {
-        if (!this.recipientTable) {
-            this.processRecipients();
-        }
-        if (!this.recipientTable) {
-            throw new Error("PSTMessage::getRecipient recipientTable is null");
-        }
+    public getRecipient(recipientNumber: number): PSTRecipient {
+        return this.getRecipients()[recipientNumber];
+    }
 
-        if (
-            recipientNumber >= this.numberOfRecipients ||
-            recipientNumber >= this.recipientTable.getItems().length
-        ) {
-            throw new Error(
-                `PSTMessage::getRecipient unable to fetch recipient number ${recipientNumber}`
-            );
+    public getRecipients(): PSTRecipient[] {
+        this.processRecipients();
+        if (!this.recipientTable) {
+            return [];
+            // throw new Error("PSTMessage::getRecipient recipientTable is null");
         }
-        const recipientDetails =
-            this.recipientTable.getItems()[recipientNumber];
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        return recipientDetails
-            ? new PSTRecipient(this.pstFile, recipientDetails)
-            : null;
+        return (this.recipients =
+            this.recipients ??
+            this.recipientTable
+                .getItems()
+                .map(
+                    (recipientDetails) =>
+                        new PSTRecipient(this.pstFile, recipientDetails)
+                ));
     }
 
     /**
@@ -372,17 +372,15 @@ export class PSTMessage extends PSTObject {
      * Find, extract and load up all of the attachments in this email
      */
     private processRecipients(): void {
+        if (this.recipientTable) {
+            return;
+        }
+
         try {
             const recipientTableKey = 0x0692;
-            if (
-                this.recipientTable === null &&
-                this.localDescriptorItems !== null &&
-                this.localDescriptorItems.has(recipientTableKey)
-            ) {
-                const item: PSTDescriptorItem | undefined =
-                    this.localDescriptorItems.get(recipientTableKey);
-                let descriptorItems: Map<number, PSTDescriptorItem> | null =
-                    new Map();
+            if (this.localDescriptorItems?.has(recipientTableKey)) {
+                const item = this.localDescriptorItems.get(recipientTableKey);
+                let descriptorItems = new Map<number, PSTDescriptorItem>();
                 if (item && item.subNodeOffsetIndexIdentifier > 0) {
                     descriptorItems = this.pstFile.getPSTDescriptorItems(
                         long.fromNumber(item.subNodeOffsetIndexIdentifier)
@@ -403,10 +401,8 @@ export class PSTMessage extends PSTObject {
      * Get the recipients table.
      */
     public get numberOfRecipients(): number {
-        if (this.recipientTable === null) {
-            this.processRecipients();
-        }
-        return this.recipientTable ? this.recipientTable.rowCount : 0;
+        this.processRecipients();
+        return this.recipientTable?.rowCount ?? 0;
     }
 
     /**
@@ -623,20 +619,16 @@ export class PSTMessage extends PSTObject {
     /**
      * Contains a text string that identifies the sender-defined message class, such as IPM.Note.
      * https://msdn.microsoft.com/en-us/library/office/cc765765.aspx
-     * @readonly
-     * @type {string}
-     * @memberof PSTMessage
      */
-    public get messageClass(): string {
-        return this.getStringItem(OutlookProperties.PR_MESSAGE_CLASS);
+    public get messageClass(): MessageClass {
+        return this.getStringItem(
+            OutlookProperties.PR_MESSAGE_CLASS
+        ) as MessageClass;
     }
 
     /**
      * Contains the full subject of a message.
      * https://technet.microsoft.com/en-us/library/cc815720
-     * @readonly
-     * @type {string}
-     * @memberof PSTMessage
      */
     public get subject(): string {
         let subject = this.getStringItem(OutlookProperties.PR_SUBJECT);
@@ -988,9 +980,6 @@ export class PSTMessage extends PSTObject {
     /**
      * Contains TRUE if a client application wants MAPI to delete the associated message after submission.
      * https://msdn.microsoft.com/en-us/library/office/cc842353.aspx
-     * @readonly
-     * @type {boolean}
-     * @memberof PSTMessage
      */
     public get deleteAfterSubmit(): boolean {
         return this.getIntItem(OutlookProperties.PR_DELETE_AFTER_SUBMIT) !== 0;
@@ -999,9 +988,6 @@ export class PSTMessage extends PSTObject {
     /**
      * Contains TRUE if some transport provider has already accepted responsibility for delivering the message to this recipient, and FALSE if the MAPI spooler considers that this transport provider should accept responsibility.
      * https://msdn.microsoft.com/en-us/library/office/cc765767.aspx
-     * @readonly
-     * @type {boolean}
-     * @memberof PSTMessage
      */
     public get responsibility(): boolean {
         return this.getIntItem(OutlookProperties.PR_RESPONSIBILITY) !== 0;
@@ -1042,9 +1028,6 @@ export class PSTMessage extends PSTObject {
     /**
      * Contains the date and time when a message was delivered.
      * https://msdn.microsoft.com/en-us/library/office/cc841961.aspx
-     * @readonly
-     * @type {Date}
-     * @memberof PSTMessage
      */
     public get messageDeliveryTime(): Date | null {
         return this.getDateItem(OutlookProperties.PR_MESSAGE_DELIVERY_TIME);
@@ -1278,4 +1261,15 @@ export class PSTMessage extends PSTObject {
     public get modificationTime(): Date | null {
         return this.getDateItem(OutlookProperties.PR_LAST_MODIFICATION_TIME);
     }
+}
+
+export const enum AcknowledgementMode {
+    manual = 0,
+    automatic = 1,
+}
+
+export const enum Importance {
+    low = 0,
+    normal = 1,
+    high = 2,
 }

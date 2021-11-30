@@ -1,7 +1,6 @@
-/* eslint-disable jest/no-conditional-expect */
 import path from "path";
 
-import type { PSTFolder, PSTMessage } from "../src";
+import type { PSTFolder } from "../src";
 import { PSTFile } from "../src";
 
 let pstFile: PSTFile;
@@ -49,38 +48,32 @@ describe("PSTRecipient tests", () => {
         expect(childFolders[0].displayName).toEqual("TW-Commercial Group");
         const comGroupFolder = childFolders[0];
 
-        let msg = comGroupFolder.getNextChild() as PSTMessage;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        let msg = comGroupFolder.getNextChild()!;
         expect(msg.messageClass).toEqual("IPM.Note");
         expect(msg.subject).toEqual("New OBA's");
         expect(msg.senderName).toEqual("Lee  Dennis");
         expect(msg.senderEmailAddress).toEqual("Dennis.Lee@ENRON.com");
         expect(msg.displayTo).toEqual("Lindberg  Lorraine; Watson  Kimberly");
 
-        let recipient = msg.getRecipient(0);
+        let recipient = msg.getRecipients()[0];
         expect(recipient).toBeTruthy();
-        if (recipient) {
-            // Log.debug1(JSON.stringify(recipient, null, 2));
-            expect(recipient.displayName).toEqual("Lindberg  Lorraine");
-            expect(recipient.smtpAddress).toEqual(
-                "Lorraine.Lindberg@ENRON.com"
-            );
-        }
+        // Log.debug1(JSON.stringify(recipient, null, 2));
+        expect(recipient.displayName).toEqual("Lindberg  Lorraine");
+        expect(recipient.smtpAddress).toEqual("Lorraine.Lindberg@ENRON.com");
 
-        recipient = msg.getRecipient(1);
+        recipient = msg.getRecipients()[1];
         expect(recipient).toBeTruthy();
-        if (recipient) {
-            expect(recipient.displayName).toEqual("Watson  Kimberly");
-            expect(recipient.smtpAddress).toEqual("Kimberly.Watson@ENRON.com");
-        }
+        expect(recipient.displayName).toEqual("Watson  Kimberly");
+        expect(recipient.smtpAddress).toEqual("Kimberly.Watson@ENRON.com");
 
-        recipient = msg.getRecipient(2);
+        recipient = msg.getRecipients()[2];
         expect(recipient).toBeTruthy();
-        if (recipient) {
-            expect(recipient.displayName).toEqual("Lee  Dennis");
-            expect(recipient.smtpAddress).toEqual("Dennis.Lee@ENRON.com");
-        }
+        expect(recipient.displayName).toEqual("Lee  Dennis");
+        expect(recipient.smtpAddress).toEqual("Dennis.Lee@ENRON.com");
 
-        msg = comGroupFolder.getNextChild() as PSTMessage;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        msg = comGroupFolder.getNextChild()!;
         expect(msg.messageClass).toEqual("IPM.Note");
         expect(msg.subject).toEqual(
             "I/B Link Capacity for November and December 2001"
@@ -88,12 +81,10 @@ describe("PSTRecipient tests", () => {
         expect(msg.sentRepresentingEmailAddress).toEqual("JReames@br-inc.com");
         expect(msg.displayTo).toEqual("Michelle Lokay (E-mail)");
 
-        recipient = msg.getRecipient(0);
+        recipient = msg.getRecipients()[0];
         expect(recipient).toBeTruthy();
-        if (recipient) {
-            // Log.debug1(JSON.stringify(recipient, null, 2));
-            expect(recipient.displayName).toEqual("Michelle Lokay (E-mail)");
-            expect(recipient.smtpAddress).toEqual("michelle.lokay@enron.com");
-        }
+        // Log.debug1(JSON.stringify(recipient, null, 2));
+        expect(recipient.displayName).toEqual("Michelle Lokay (E-mail)");
+        expect(recipient.smtpAddress).toEqual("michelle.lokay@enron.com");
     });
 });

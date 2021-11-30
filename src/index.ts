@@ -5,6 +5,7 @@ export { PSTContact } from "./PSTContact";
 export { PSTFile } from "./PSTFile";
 export { PSTFolder } from "./PSTFolder";
 export { PSTMessage } from "./PSTMessage";
+export { PSTObject } from "./PSTObject";
 export { PSTRecipient } from "./PSTRecipient";
 export { PSTTask } from "./PSTTask";
 export * as PSTUtil from "./PSTUtil";

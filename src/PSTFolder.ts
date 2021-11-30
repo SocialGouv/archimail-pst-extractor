@@ -87,7 +87,7 @@ export class PSTFolder extends PSTObject {
      * Get the next child of this folder. As there could be thousands of emails, we have these
      * kind of cursor operations.
      */
-    public getNextChild(): PSTFolder | PSTMessage | null {
+    public getNextChild(): PSTMessage | null {
         this.initEmailsTable();
 
         if (this.emailsTable) {
@@ -113,7 +113,7 @@ export class PSTFolder extends PSTObject {
             const child = PSTUtil.detectAndLoadPSTObject(
                 this.pstFile,
                 childDescriptor
-            );
+            ) as PSTMessage;
             this.currentEmailIndex++;
             return child;
         } else if (this.fallbackEmailsTable) {
@@ -130,7 +130,7 @@ export class PSTFolder extends PSTObject {
             const child = PSTUtil.detectAndLoadPSTObject(
                 this.pstFile,
                 childDescriptor
-            );
+            ) as PSTMessage;
             this.currentEmailIndex++;
             return child;
         }
@@ -138,10 +138,20 @@ export class PSTFolder extends PSTObject {
     }
 
     /**
+     * Iterate over children in this folder.
+     */
+    public *childrenIterator(): Generator<PSTMessage, void> {
+        if (this.contentCount) {
+            let child = this.getNextChild();
+            while (child) {
+                yield child;
+                child = this.getNextChild();
+            }
+        }
+    }
+
+    /**
      *  Move the internal folder cursor to the desired position position 0 is before the first record.
-     * @param {number} newIndex
-     * @returns
-     * @memberof PSTFolder
      */
     public moveChildCursorTo(newIndex: number): void {
         this.initEmailsTable();
@@ -298,9 +308,6 @@ export class PSTFolder extends PSTObject {
 
     /**
      * Number of emails in this folder
-     * @readonly
-     * @type {number}
-     * @memberof PSTFolder
      */
     public get emailCount(): number {
         this.initEmailsTable();

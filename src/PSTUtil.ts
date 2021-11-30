@@ -14,6 +14,49 @@ import type { PSTDescriptorItem } from "./PSTDescriptorItem";
 import { PSTNodeInputStream } from "./PSTNodeInputStream";
 import { PSTTableBC } from "./PSTTableBC";
 
+export type MessageClass =
+    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
+    | "IPM.Activity"
+    | "IPM.Appointment"
+    | "IPM.Contact"
+    | "IPM.DistList"
+    | "IPM.Document"
+    | "IPM.Note.IMC.Notification"
+    | "IPM.Note.Rules.OofTemplate.Microsoft"
+    | "IPM.Note.Rules.ReplyTemplate.Microsoft"
+    | "IPM.Note.Secure.Sign"
+    | "IPM.Note.Secure"
+    | "IPM.Note"
+    | "IPM.OLE.Class"
+    | "IPM.Outlook.Recall"
+    | "IPM.Post"
+    | "IPM.Recall.Report"
+    | "IPM.Remote"
+    | "IPM.Report"
+    | "IPM.Resend"
+    | "IPM.Schedule.Meeting.Canceled"
+    | "IPM.Schedule.Meeting.Request"
+    | "IPM.Schedule.Meeting.Resp.Neg"
+    | "IPM.Schedule.Meeting.Resp.Pos"
+    | "IPM.Schedule.Meeting.Resp.Tent"
+    | "IPM.StickyNote"
+    | "IPM.Task"
+    | "IPM.TaskRequest.Accept"
+    | "IPM.TaskRequest.Decline"
+    | "IPM.TaskRequest.Update"
+    | "IPM.TaskRequest"
+    | "IPM"
+    // Not defined in doc
+    | "IPM.Note.SMIME.MultipartSigned"
+    | "IPM.Note.Agenda"
+    | "IPM.OLE.CLASS.{00061055-0000-0000-C000-000000000046}"
+    | "IPM.Schedule.Meeting.Notification.Forward"
+    | "IPM.Post.Rss"
+    | "REPORT.IPM.Note.NDR"
+    | "REPORT.IPM.Note.IPNRN"
+    | "REPORT.IPM.Note.IPNNRN"
+    | "REPORT.IPM.Note.DR";
+
 // substitution table for the compressible encryption type.
 export const compEnc = [
     0x47, 0xf1, 0xb4, 0xe6, 0x0b, 0x6a, 0x72, 0x48, 0x85, 0x4e, 0x9e, 0xeb,
@@ -503,10 +546,7 @@ export const createAppropriatePSTMessageObject = (
     localDescriptorItems?: Map<number, PSTDescriptorItem>
 ): PSTMessage => {
     const item = table.getItems().get(0x001a);
-    let messageClass = "";
-    if (item) {
-        messageClass = item.getStringValue();
-    }
+    const messageClass = item?.getStringValue() as MessageClass;
     switch (messageClass) {
         case "IPM.Note":
         case "IPM.Note.SMIME.MultipartSigned":
@@ -634,11 +674,11 @@ export const createAppropriatePSTMessageObject = (
             console.error(
                 `[PSTUtil] createAppropriatePSTMessageObject unknown message type: ${messageClass}`
             );
+            return new PSTMessage(
+                theFile,
+                folderIndexNode,
+                table,
+                localDescriptorItems
+            );
     }
-    return new PSTMessage(
-        theFile,
-        folderIndexNode,
-        table,
-        localDescriptorItems
-    );
 };

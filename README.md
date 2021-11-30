@@ -20,7 +20,7 @@ A spec from Microsoft on the PST file format is at https://msdn.microsoft.com/en
 
 or
 
-```yarn add pst-extractor```
+```yarn add @socialgouv/archimail-pst-extractor```
 
 
 
