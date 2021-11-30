@@ -1,6 +1,6 @@
 import path from "path";
 
-import type { PSTFolder, PSTMessage } from "../src";
+import type { PSTFolder } from "../src";
 import { PSTFile } from "../src";
 
 let pstFile: PSTFile;
@@ -43,7 +43,7 @@ describe("PSTObject tests", () => {
         const comGroupFolder = childFolders[0];
         // Log.debug1(JSON.stringify(comGroupFolder, null, 2));
 
-        const msg = comGroupFolder.getNextChild() as PSTMessage;
+        const msg = comGroupFolder.getNextChild()!;
         // Log.debug1(JSON.stringify(msg, null, 2));
         expect(msg.messageClass).toEqual("IPM.Note");
         expect(msg.stringCodepage).toEqual("us-ascii");

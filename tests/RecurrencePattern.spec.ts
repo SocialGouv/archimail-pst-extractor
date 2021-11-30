@@ -148,7 +148,6 @@ describe("RecurrencePattern tests", () => {
         );
         expect(appt.duration).toEqual(60);
         let recurrencePattern = new RecurrencePattern(
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             appt.recurrenceStructure!
         );
         expect(recurrencePattern.occurrenceCount).toEqual(10);
@@ -164,10 +163,7 @@ describe("RecurrencePattern tests", () => {
             "every day from 12:00 PM to 12:30 PM"
         );
         expect(appt.duration).toEqual(30);
-        recurrencePattern = new RecurrencePattern(
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            appt.recurrenceStructure!
-        );
+        recurrencePattern = new RecurrencePattern(appt.recurrenceStructure!);
         // console.log(JSON.stringify(recurrencePattern, null, 2));
         expect(recurrencePattern.occurrenceCount).toEqual(3);
         expect(recurrencePattern.patternType).toEqual(PatternType.Day);

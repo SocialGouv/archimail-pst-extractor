@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-standalone-expect */
 import path from "path";
 
-import type { PSTFolder, PSTMessage } from "../src";
+import type { PSTFolder } from "../src";
 import { PSTFile } from "../src";
 
 let pstFile: PSTFile;
@@ -52,7 +52,7 @@ describe("PSTMessage tests", () => {
         expect(childFolders[0].displayName).toEqual("TW-Commercial Group");
         const comGroupFolder = childFolders[0];
 
-        let msg = comGroupFolder.getNextChild() as PSTMessage;
+        let msg = comGroupFolder.getNextChild()!;
         // Log.debug1(JSON.stringify(msg, null, 2));
         expect(msg.messageClass).toEqual("IPM.Note");
         expect(msg.subject).toEqual("New OBA's");
@@ -66,7 +66,7 @@ describe("PSTMessage tests", () => {
         );
         expect(body.length).toEqual(678);
 
-        msg = comGroupFolder.getNextChild() as PSTMessage;
+        msg = comGroupFolder.getNextChild()!;
         expect(msg.messageClass).toEqual("IPM.Note");
         expect(msg.displayTo).toEqual("Michelle Lokay (E-mail)");
         body = msg.body;
@@ -194,7 +194,7 @@ describe("PSTMessage tests", () => {
         expect(childFolders[3].displayName).toEqual("Personal");
         const personalFolder = childFolders[3];
 
-        const msg = personalFolder.getNextChild() as PSTMessage;
+        const msg = personalFolder.getNextChild()!;
         // Log.debug1(JSON.stringify(msg, null, 2));
         expect(msg.messageClass).toEqual("IPM.Note");
         expect(msg.subject).toEqual(

@@ -1,12 +1,6 @@
 import path from "path";
 
-import type {
-    PSTAttachment,
-    PSTContact,
-    PSTFolder,
-    PSTMessage,
-    PSTTask,
-} from "../src";
+import type { PSTAttachment, PSTContact, PSTFolder, PSTTask } from "../src";
 import { PSTFile } from "../src";
 
 let pstFile: PSTFile;
@@ -87,9 +81,9 @@ describe("PSTAttachment tests", () => {
     it("should have email with word attachment", () => {
         const childFolders = subtreeFolder.getSubFolders();
         const folder = childFolders[1]; // Inbox
-        let msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
+        let msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
 
         // Email: 2110308 - word attachment
         expect(msg.hasAttachments).toBeTruthy();
@@ -104,10 +98,10 @@ describe("PSTAttachment tests", () => {
     it("should have email with excel attachment", () => {
         const childFolders = subtreeFolder.getSubFolders();
         const folder = childFolders[1]; // Inbox
-        let msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
+        let msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
 
         // Email: 2110724 - excel attachment
         expect(msg.hasAttachments).toBeTruthy();
@@ -122,11 +116,11 @@ describe("PSTAttachment tests", () => {
     it("should have email with jpg attachment", () => {
         const childFolders = subtreeFolder.getSubFolders();
         const folder = childFolders[1]; // Inbox
-        let msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
-        msg = folder.getNextChild() as PSTMessage;
+        let msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
+        msg = folder.getNextChild()!;
 
         // Email: 2111140 - never gonna give you up
         expect(msg.hasAttachments).toBeTruthy();

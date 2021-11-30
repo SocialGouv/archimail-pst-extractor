@@ -48,7 +48,6 @@ describe("PSTRecipient tests", () => {
         expect(childFolders[0].displayName).toEqual("TW-Commercial Group");
         const comGroupFolder = childFolders[0];
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         let msg = comGroupFolder.getNextChild()!;
         expect(msg.messageClass).toEqual("IPM.Note");
         expect(msg.subject).toEqual("New OBA's");
@@ -72,7 +71,6 @@ describe("PSTRecipient tests", () => {
         expect(recipient.displayName).toEqual("Lee  Dennis");
         expect(recipient.smtpAddress).toEqual("Dennis.Lee@ENRON.com");
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         msg = comGroupFolder.getNextChild()!;
         expect(msg.messageClass).toEqual("IPM.Note");
         expect(msg.subject).toEqual(
