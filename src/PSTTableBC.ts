@@ -86,7 +86,8 @@ export class PSTTableBC extends PSTTable {
                 case 0x000d:
                 default:
                     // Is it in the local heap?
-                    item.isExternalValueReference = true; // Assume not
+                    // Assume not
+                    item.isExternalValueReference = true;
                     // eslint-disable-next-line no-case-declarations
                     const nodeInfoNodeInfo = this.getNodeInfo(
                         item.entryValueReference
