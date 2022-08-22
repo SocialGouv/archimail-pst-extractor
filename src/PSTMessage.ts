@@ -256,6 +256,7 @@ export class PSTMessage extends PSTObject {
                 senderAddrtype: this.senderAddrtype,
                 senderEmailAddress: this.senderEmailAddress,
                 senderName: this.senderName,
+                senderSmtpEmailAddress: this.senderSmtpEmailAddress,
                 sensitivity: this.sensitivity,
                 sentRepresentingAddressType: this.sentRepresentingAddressType,
                 sentRepresentingEmailAddress: this.sentRepresentingEmailAddress,
@@ -935,6 +936,14 @@ export class PSTMessage extends PSTObject {
      */
     public get senderEmailAddress(): string {
         return this.getStringItem(OutlookProperties.PR_SENDER_EMAIL_ADDRESS);
+    }
+
+    /**
+     * Contains the message sender's SMTP e-mail address.
+     * https://docs.microsoft.com/en-us/office/client-developer/outlook/mapi/pidtagsendersmtpaddress-canonical-property
+     */
+    public get senderSmtpEmailAddress(): string {
+        return this.getStringItem(OutlookProperties.PR_SENDER_SMTP_ADDRESS);
     }
 
     /**

@@ -88,17 +88,25 @@ export class PSTFolder extends PSTObject {
      * kind of cursor operations.
      */
     public getNextChild(): PSTMessage | null {
+        const child = this.getChildAt(this.currentEmailIndex);
+        if (child) this.currentEmailIndex++;
+        return child;
+    }
+
+    /**
+     * Get one child of this folder at specific positiion.
+     */
+    public getChildAt(index: number): PSTMessage | null {
         this.initEmailsTable();
 
         if (this.emailsTable) {
-            if (this.currentEmailIndex === this.contentCount) {
-                // no more!
+            if (index >= this.contentCount || index < 0) {
                 return null;
             }
 
             // get the emails from the rows in the main email table
             const rows: Map<number, PSTTableItem>[] = this.emailsTable.getItems(
-                this.currentEmailIndex,
+                index,
                 1
             );
             const emailRow = rows[0].get(0x67f2);
@@ -114,24 +122,20 @@ export class PSTFolder extends PSTObject {
                 this.pstFile,
                 childDescriptor
             ) as PSTMessage;
-            this.currentEmailIndex++;
             return child;
         } else if (this.fallbackEmailsTable) {
             if (
-                this.currentEmailIndex >= this.contentCount ||
-                this.currentEmailIndex >= this.fallbackEmailsTable.length
+                index >= this.contentCount ||
+                index >= this.fallbackEmailsTable.length
             ) {
-                // no more!
                 return null;
             }
 
-            const childDescriptor =
-                this.fallbackEmailsTable[this.currentEmailIndex];
+            const childDescriptor = this.fallbackEmailsTable[index];
             const child = PSTUtil.detectAndLoadPSTObject(
                 this.pstFile,
                 childDescriptor
             ) as PSTMessage;
-            this.currentEmailIndex++;
             return child;
         }
         return null;
