@@ -688,6 +688,16 @@ export class PSTMessage extends PSTObject {
     }
 
     /**
+     * Contains the Simple Mail Transport Protocol (SMTP) email address for the messaging user who is represented by the sender.
+     * https://learn.microsoft.com/en-us/office/client-developer/outlook/mapi/pidtagsentrepresentingsmtpaddress-canonical-property
+     */
+    public get sentRepresentingSmtpAddress(): string {
+        return this.getStringItem(
+            OutlookProperties.PR_SENT_REPRESENTING_SMTP_ADDRESS
+        );
+    }
+
+    /**
      * Contains the topic of the first message in a conversation thread.
      * https://technet.microsoft.com/en-us/windows/cc839841
      */
@@ -710,6 +720,15 @@ export class PSTMessage extends PSTObject {
     public get receivedByAddress(): string {
         return this.getStringItem(
             OutlookProperties.PR_RECEIVED_BY_EMAIL_ADDRESS
+        );
+    }
+
+    /**
+     * Contains the SMTP address for the messaging user who receives the message.
+     */
+    public get receivedBySmtpAddress(): string {
+        return this.getStringItem(
+            OutlookProperties.PR_RECEIVED_BY_SMTP_ADDRESS
         );
     }
 
@@ -895,6 +914,15 @@ export class PSTMessage extends PSTObject {
     public get rcvdRepresentingEmailAddress(): string {
         return this.getStringItem(
             OutlookProperties.PR_RCVD_REPRESENTING_EMAIL_ADDRESS
+        );
+    }
+
+    /**
+     * Received representing SMTP address.
+     */
+    public get rcvdRepresentingSmtpAddress(): string {
+        return this.getStringItem(
+            OutlookProperties.PR_RCVD_REPRESENTING_SMTP_ADDRESS
         );
     }
 

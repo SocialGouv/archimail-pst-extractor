@@ -1,3 +1,4 @@
+import iconv from "iconv-lite";
 import long from "long";
 
 import type { PSTFile } from ".";
@@ -401,13 +402,14 @@ export const getInternetCodePageCharset = (
 export const createJavascriptString = (
     data: Buffer,
     stringType: number,
-    _codepage?: string
+    codepage = "utf-8"
 ): string => {
-    // TODO - codepage is not used...
     try {
         if (stringType === 0x1f) {
             // convert and trim any nulls
             return data.toString("utf16le").replace(/\0/g, "");
+        } else {
+            return iconv.decode(data, codepage).toString();
         }
     } catch (err: unknown) {
         console.error(
