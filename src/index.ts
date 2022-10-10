@@ -1,3 +1,4 @@
+export { stringify as emlStringify, EmlStringifyOptions } from "./eml/builder";
 export { PSTActivity } from "./PSTActivity";
 export { PSTAppointment } from "./PSTAppointment";
 export { PSTAttachment } from "./PSTAttachment";

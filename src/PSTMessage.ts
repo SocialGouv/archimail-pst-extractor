@@ -2,6 +2,9 @@ import long from "long";
 
 import { PSTUtil } from ".";
 import type { DescriptorIndexNode } from "./DescriptorIndexNode";
+import type { EmlStringifyOptions } from "./eml/builder";
+import { stringify } from "./eml/builder";
+import type { EmlAttachment } from "./eml/type";
 import { LZFu } from "./LZFu";
 import { OutlookProperties } from "./OutlookProperties";
 import { PSTAttachment } from "./PSTAttachment";
@@ -270,6 +273,71 @@ export class PSTMessage extends PSTObject {
             this
         );
         return clone;
+    }
+
+    public toEML(options?: EmlStringifyOptions): string {
+        const attachments: EmlAttachment[] = [];
+        for (let i = 0; i < this.numberOfAttachments; i++) {
+            const att = this.getAttachment(i);
+            const data = Buffer.allocUnsafe(8176);
+            att.fileInputStream?.readCompletely(data);
+            attachments.push({
+                cid: att.contentId,
+                contentType: att.mimeTag,
+                data,
+                filename: att.longFilename,
+                inline: att.renderingPosition > -1,
+                name: att.displayName,
+            });
+        }
+        return stringify(
+            {
+                attachments,
+                cc: this.getRecipientsFromDisplay("cc").map((recipient) => ({
+                    email: (
+                        recipient.smtpAddress || recipient.emailAddress
+                    ).toLowerCase(),
+                    name: recipient.recipientDisplayName,
+                })),
+                from: {
+                    email: (
+                        this.senderSmtpEmailAddress || this.senderEmailAddress
+                    ).toLowerCase(),
+                    name: this.senderName,
+                },
+                html: this.bodyHTML,
+                subject: this.subject,
+                text: this.body,
+                to: this.getRecipientsFromDisplay("to").map((recipient) => ({
+                    email: (
+                        recipient.smtpAddress || recipient.emailAddress
+                    ).toLowerCase(),
+                    name: recipient.recipientDisplayName,
+                })),
+            },
+            options
+        );
+    }
+
+    public getRecipientsFromDisplay(
+        display: "bcc" | "cc" | "to"
+    ): PSTRecipient[] {
+        return (
+            display === "cc"
+                ? this.displayCC
+                : display === "bcc"
+                ? this.displayBCC
+                : this.displayTo
+        )
+            .split(";")
+            .map((name) => name.trim())
+            .filter(Boolean)
+            .map((name) =>
+                this.getRecipients().find(
+                    (recipient) => recipient.displayName === name
+                )
+            )
+            .filter(Boolean) as PSTRecipient[];
     }
 
     /**
